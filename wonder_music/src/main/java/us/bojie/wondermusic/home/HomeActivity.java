@@ -21,7 +21,7 @@ import us.bojie.wondermusic.R;
 import us.bojie.wondermusic.databinding.ActivityHomeBinding;
 import us.bojie.wondermusic.home.model.CHANNEL;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final CHANNEL[] CHANNELS =
             new CHANNEL[]{CHANNEL.MY, CHANNEL.DISCORY, CHANNEL.FRIEND};
@@ -75,5 +75,10 @@ public class HomeActivity extends AppCompatActivity {
 
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, binding.viewPager);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
