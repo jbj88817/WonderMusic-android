@@ -14,14 +14,14 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import us.bojie.lib_common_ui.base.BaseActivity;
 import us.bojie.lib_common_ui.pager_indictor.ScaleTransitionPagerTitleView;
 import us.bojie.wondermusic.R;
 import us.bojie.wondermusic.databinding.ActivityHomeBinding;
 import us.bojie.wondermusic.home.model.CHANNEL;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
+public class HomeActivity extends BaseActivity implements View.OnClickListener{
 
     private static final CHANNEL[] CHANNELS =
             new CHANNEL[]{CHANNEL.MY, CHANNEL.DISCORY, CHANNEL.FRIEND};

@@ -10,7 +10,7 @@ import us.bojie.wondermusic.home.mine.MineFragment;
 import us.bojie.wondermusic.home.model.CHANNEL;
 
 /**
- * 首页ViewPger的Adpater
+ * 首页ViewPager的Adapter
  */
 public class HomePagerAdapter extends FragmentPagerAdapter {
     private CHANNEL[] mList;
