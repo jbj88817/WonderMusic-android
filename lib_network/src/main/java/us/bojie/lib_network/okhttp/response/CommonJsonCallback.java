@@ -9,22 +9,12 @@ import com.google.gson.Gson;
 import java.io.IOException;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 import us.bojie.lib_network.okhttp.exception.OkHttpException;
 import us.bojie.lib_network.okhttp.response.listener.DisposeDataHandle;
 import us.bojie.lib_network.okhttp.response.listener.DisposeDataListener;
 
-public class CommonJsonCallback implements Callback {
-
-    protected final String EMPTY_MSG = "";
-
-    /**
-     * the java layer exception, do not same to the logic error
-     */
-    protected final int NETWORK_ERROR = -1; // the network relative error
-    protected final int JSON_ERROR = -2; // the JSON relative error
-    protected final int OTHER_ERROR = -3; // the unknown error
+public class CommonJsonCallback extends CommonCallback {
 
     private DisposeDataListener mListener;
     private Class<?> mClass;
