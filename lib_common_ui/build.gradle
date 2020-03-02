@@ -26,6 +26,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation this.rootProject.depsLibs.appcompact
+    implementation this.rootProject.depsLibs.appcompat
     api rootProject.depsLibs.magicindicator
 }

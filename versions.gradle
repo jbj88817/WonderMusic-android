@@ -7,7 +7,7 @@ ext {
                versionCode      : 1,
                versionName      : '1.0',
                multiDexEnabled  : true,]
-    depsVersion = [appcompact     : '1.1.0',
+    depsVersion = [appcompat     : '1.1.0',
                    design         : '1.0.0',
                    recyclerview   : '1.0.0',
                    constraint     : '1.1.3',
@@ -23,7 +23,7 @@ ext {
                    okhttp         : '3.12.10',
                    gson           : '2.8.0',
     ]
-    depsLibs = [appcompact     : "androidx.appcompat:appcompat:${depsVersion.appcompact}",
+    depsLibs = [appcompat     : "androidx.appcompat:appcompat:${depsVersion.appcompat}",
                 design         : "com.google.android.material:material:${depsVersion.design}",
                 recyclerview   : "androidx.recyclerview:recyclerview:${depsVersion.recyclerview}",
                 constraint     : "androidx.constraintlayout:constraintlayout:${depsVersion.constraint}",
