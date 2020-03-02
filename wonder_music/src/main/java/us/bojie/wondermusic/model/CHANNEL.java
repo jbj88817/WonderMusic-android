@@ -1,4 +1,4 @@
-package us.bojie.wondermusic.home.model;
+package us.bojie.wondermusic.model;
 
 public enum CHANNEL {
 

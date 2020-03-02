@@ -1,4 +1,4 @@
-package us.bojie.wondermusic.home.friend;
+package us.bojie.wondermusic.mine;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,16 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import us.bojie.wondermusic.R;
 
-public class FriendFragment extends Fragment {
+public class MineFragment extends Fragment {
 
     private Context mContext;
     private TextView mTextView;
 
-    public FriendFragment() {
+    public MineFragment() {
     }
 
     public static Fragment newInstance() {
-        FriendFragment fragment = new FriendFragment();
+        MineFragment fragment = new MineFragment();
         return fragment;
     }
 
@@ -37,7 +37,7 @@ public class FriendFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_mine_layout, null);
         mTextView = rootView.findViewById(R.id.textView);
-        mTextView.setText("朋友");
+        mTextView.setText("我的");
         return rootView;
     }
 

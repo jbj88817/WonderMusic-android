@@ -1,13 +1,13 @@
-package us.bojie.wondermusic.home.adapter;
+package us.bojie.wondermusic.adapter;
 
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import us.bojie.wondermusic.home.discory.DiscoveryFragment;
-import us.bojie.wondermusic.home.friend.FriendFragment;
-import us.bojie.wondermusic.home.mine.MineFragment;
-import us.bojie.wondermusic.home.model.CHANNEL;
+import us.bojie.wondermusic.discovery.DiscoveryFragment;
+import us.bojie.wondermusic.friend.FriendFragment;
+import us.bojie.wondermusic.mine.MineFragment;
+import us.bojie.wondermusic.model.CHANNEL;
 
 /**
  * 首页ViewPager的Adapter

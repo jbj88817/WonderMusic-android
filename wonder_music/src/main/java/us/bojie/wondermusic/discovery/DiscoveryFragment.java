@@ -1,4 +1,4 @@
-package us.bojie.wondermusic.home.discory;
+package us.bojie.wondermusic.discovery;
 
 import android.content.Context;
 import android.os.Bundle;

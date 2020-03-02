@@ -19,24 +19,25 @@ import us.bojie.lib_common_ui.base.BaseActivity;
 import us.bojie.lib_common_ui.pager_indictor.ScaleTransitionPagerTitleView;
 import us.bojie.wondermusic.R;
 import us.bojie.wondermusic.databinding.ActivityHomeBinding;
-import us.bojie.wondermusic.home.model.CHANNEL;
+import us.bojie.wondermusic.model.CHANNEL;
 
-public class HomeActivity extends BaseActivity implements View.OnClickListener{
+public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     private static final CHANNEL[] CHANNELS =
             new CHANNEL[]{CHANNEL.MY, CHANNEL.DISCORY, CHANNEL.FRIEND};
-    private ActivityHomeBinding binding;
+    private ActivityHomeBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        mBinding = ActivityHomeBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
         initMagicIndicator();
+        mBinding.logoutLayout.setOnClickListener(this);
     }
 
     private void initMagicIndicator() {
-        MagicIndicator magicIndicator = binding.magicIndicator;
+        MagicIndicator magicIndicator = mBinding.magicIndicator;
         magicIndicator.setBackgroundColor(Color.WHITE);
         CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
@@ -56,7 +57,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        binding.viewPager.setCurrentItem(index);
+                        mBinding.viewPager.setCurrentItem(index);
                     }
                 });
                 return simplePagerTitleView;
@@ -74,11 +75,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
         });
 
         magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(magicIndicator, binding.viewPager);
+        ViewPagerHelper.bind(magicIndicator, mBinding.viewPager);
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.logout_layout:
+                //TODO
+                break;
 
+        }
     }
 }
