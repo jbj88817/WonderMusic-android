@@ -1,4 +1,4 @@
-package com.imooc.imooc_voice.model;
+package us.bojie.wondermusic.model;
 
 import java.io.Serializable;
 

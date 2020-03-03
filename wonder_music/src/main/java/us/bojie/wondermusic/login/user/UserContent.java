@@ -1,6 +1,6 @@
-package com.imooc.imooc_voice.view.login.user;
+package us.bojie.wondermusic.login.user;
 
-import com.imooc.imooc_voice.model.BaseModel;
+import us.bojie.wondermusic.model.BaseModel;
 
 /**
  * 用户真正实体数据

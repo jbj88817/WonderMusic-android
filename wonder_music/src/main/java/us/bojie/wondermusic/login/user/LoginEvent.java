@@ -1,4 +1,4 @@
-package com.imooc.imooc_voice.view.login.user;
+package us.bojie.wondermusic.login.user;
 
 public class LoginEvent {
 

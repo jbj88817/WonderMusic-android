@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -19,6 +20,8 @@ import us.bojie.lib_common_ui.base.BaseActivity;
 import us.bojie.lib_common_ui.pager_indictor.ScaleTransitionPagerTitleView;
 import us.bojie.wondermusic.R;
 import us.bojie.wondermusic.databinding.ActivityHomeBinding;
+import us.bojie.wondermusic.login.LoginActivity;
+import us.bojie.wondermusic.login.manager.UserManager;
 import us.bojie.wondermusic.model.CHANNEL;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
@@ -82,7 +85,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logout_layout:
-                //TODO
+                if (!UserManager.getInstance().hasLogin()) {
+                    LoginActivity.start(this);
+                } else {
+                    mBinding.drawerLayout.closeDrawer(Gravity.LEFT);
+                }
                 break;
 
         }
