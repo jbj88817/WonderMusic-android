@@ -46,7 +46,7 @@ public class CommonOkHttpClient {
         mOkHttpClient = builder.build();
     }
 
-    public static Call ResponseJson(Request request, DisposeDataHandle handle) {
+    public static Call responseJson(Request request, DisposeDataHandle handle) {
         Call call = mOkHttpClient.newCall(request);
         call.enqueue(new CommonJsonCallback(handle));
         return call;
