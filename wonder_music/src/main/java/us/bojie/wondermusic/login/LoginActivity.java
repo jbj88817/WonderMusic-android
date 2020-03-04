@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,6 +33,7 @@ public class LoginActivity extends BaseActivity implements DisposeDataListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = ActivityLoginLayoutBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
         mBinding.loginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +52,6 @@ public class LoginActivity extends BaseActivity implements DisposeDataListener {
 
     @Override
     public void onFailure(Object reasonObj) {
-
+        Toast.makeText(this, "Failed login!", Toast.LENGTH_SHORT).show();
     }
 }

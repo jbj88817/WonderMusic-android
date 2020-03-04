@@ -63,7 +63,7 @@ public class ImageLoaderManager {
                 .apply(initCommonRequestOption())
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override
-                    protected void setResource(Bitmap resource) {
+                    protected void setResource(final Bitmap resource) {
                         RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory
                                 .create(imageView.getResources(), resource);
                         drawable.setCircular(true);

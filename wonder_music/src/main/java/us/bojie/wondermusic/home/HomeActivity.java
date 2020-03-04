@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -15,13 +16,21 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import us.bojie.lib_common_ui.base.BaseActivity;
 import us.bojie.lib_common_ui.pager_indictor.ScaleTransitionPagerTitleView;
+import us.bojie.lib_image_loader.app.ImageLoaderManager;
 import us.bojie.wondermusic.R;
+import us.bojie.wondermusic.adapter.HomePagerAdapter;
 import us.bojie.wondermusic.databinding.ActivityHomeBinding;
 import us.bojie.wondermusic.login.LoginActivity;
 import us.bojie.wondermusic.login.manager.UserManager;
+import us.bojie.wondermusic.login.user.LoginEvent;
 import us.bojie.wondermusic.model.CHANNEL;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
@@ -33,10 +42,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         mBinding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         initMagicIndicator();
         mBinding.logoutLayout.setOnClickListener(this);
+        HomePagerAdapter adapter = new HomePagerAdapter(getSupportFragmentManager(), CHANNELS);
+        mBinding.viewPager.setAdapter(adapter);
+        mBinding.toggleView.setOnClickListener(this);
     }
 
     private void initMagicIndicator() {
@@ -82,16 +95,39 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(View v) {
+        DrawerLayout drawerLayout = mBinding.drawerLayout;
         switch (v.getId()) {
             case R.id.logout_layout:
                 if (!UserManager.getInstance().hasLogin()) {
                     LoginActivity.start(this);
                 } else {
-                    mBinding.drawerLayout.closeDrawer(Gravity.LEFT);
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                }
+                break;
+            case R.id.toggle_view:
+                if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                } else {
+                    drawerLayout.openDrawer(Gravity.LEFT);
                 }
                 break;
 
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginEvent(LoginEvent event) {
+        mBinding.logoutLayout.setVisibility(View.GONE);
+        ImageView photoView = mBinding.avatarView;
+        photoView.setVisibility(View.VISIBLE);
+        ImageLoaderManager.getInstance().displayImageForCircle(photoView,
+                UserManager.getInstance().getUser().data.photoUrl);
     }
 }

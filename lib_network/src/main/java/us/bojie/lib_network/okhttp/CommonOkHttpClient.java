@@ -11,6 +11,8 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import us.bojie.lib_network.okhttp.https.HttpsUtils;
 import us.bojie.lib_network.okhttp.response.CommonFileCallback;
 import us.bojie.lib_network.okhttp.response.CommonJsonCallback;
 import us.bojie.lib_network.okhttp.response.listener.DisposeDataHandle;
@@ -21,6 +23,8 @@ public class CommonOkHttpClient {
     private static OkHttpClient mOkHttpClient;
 
     static {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.hostnameVerifier(new HostnameVerifier() {
             @Override
@@ -39,10 +43,13 @@ public class CommonOkHttpClient {
             }
         });
 
+        builder.addInterceptor(logging);
         builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS);
         builder.readTimeout(TIME_OUT, TimeUnit.SECONDS);
         builder.writeTimeout(TIME_OUT, TimeUnit.SECONDS);
         builder.followRedirects(true);
+        builder.sslSocketFactory(HttpsUtils.initSSLSocketFactory(),
+                HttpsUtils.initTrustManager());
         mOkHttpClient = builder.build();
     }
 
