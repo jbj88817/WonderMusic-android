@@ -14,6 +14,9 @@ import us.bojie.lib_network.okhttp.exception.OkHttpException;
 import us.bojie.lib_network.okhttp.response.listener.DisposeDataHandle;
 import us.bojie.lib_network.okhttp.response.listener.DisposeDataListener;
 
+/*
+ * Base class of callback
+ */
 public class CommonJsonCallback extends CommonCallback {
 
     private DisposeDataListener mListener;
