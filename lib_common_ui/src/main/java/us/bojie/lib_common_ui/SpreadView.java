@@ -68,6 +68,7 @@ public class SpreadView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         //绘制当前所有的圆
+        // 先绘制静态的效果
         for (int i = 0; i < spreadRadius.size(); i++) {
             int alpha = alphas.get(i);
             spreadPaint.setAlpha(alpha);
