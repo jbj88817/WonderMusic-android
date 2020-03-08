@@ -8,9 +8,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
+import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
 
 import androidx.annotation.NonNull;
 import us.bojie.lib_audio.mediaplayer.app.AudioHelper;
+import us.bojie.lib_audio.mediaplayer.events.AudioCompleteEvent;
+import us.bojie.lib_audio.mediaplayer.events.AudioErrorEvent;
+import us.bojie.lib_audio.mediaplayer.events.AudioLoadEvent;
+import us.bojie.lib_audio.mediaplayer.events.AudioPauseEvent;
+import us.bojie.lib_audio.mediaplayer.events.AudioReleaseEvent;
+import us.bojie.lib_audio.mediaplayer.events.AudioStartEvent;
+import us.bojie.lib_audio.mediaplayer.model.AudioBean;
 
 public class AudioPlayer implements MediaPlayer.OnCompletionListener,
         MediaPlayer.OnBufferingUpdateListener,
@@ -34,6 +44,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
             }
         }
     };
+    private boolean mIsPauseByFocusLossTransient;
 
     public AudioPlayer() {
         init();
@@ -56,6 +67,71 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
         mAudioFocusManager = new AudioFocusManager(context, this);
     }
 
+    public void load(AudioBean audioBean) {
+        try {
+            mMediaPlayer.reset();
+            mMediaPlayer.setDataSource(audioBean.mUrl);
+            mMediaPlayer.prepareAsync();
+            EventBus.getDefault().post(new AudioLoadEvent(audioBean));
+        } catch (Exception e) {
+            EventBus.getDefault().post(new AudioErrorEvent());
+        }
+    }
+
+    public void pause() {
+        if (getStatus() == CustomMediaPlayer.Status.STARTED) {
+            mMediaPlayer.pause();
+            releaseAudioFocusAndWifiLock();
+            EventBus.getDefault().post(new AudioPauseEvent());
+        }
+    }
+
+    public void resume() {
+        if (getStatus() == CustomMediaPlayer.Status.PAUSED) {
+            start();
+        }
+    }
+
+    public void release() {
+        if (mMediaPlayer == null) {
+            return;
+        }
+
+        mMediaPlayer.release();
+        mMediaPlayer = null;
+        releaseAudioFocusAndWifiLock();
+        mWifiLock = null;
+        mAudioFocusManager = null;
+        EventBus.getDefault().post(new AudioReleaseEvent());
+    }
+
+    private void start() {
+        if (!mAudioFocusManager.requestAudioFocus()) {
+            Log.e(TAG, "request audio failed");
+            return;
+        }
+
+        mMediaPlayer.start();
+        mWifiLock.acquire();
+        EventBus.getDefault().post(new AudioStartEvent());
+    }
+
+    private CustomMediaPlayer.Status getStatus() {
+        if (mMediaPlayer != null) {
+            return mMediaPlayer.getStatus();
+        }
+        return CustomMediaPlayer.Status.STOPPED;
+    }
+
+    private void releaseAudioFocusAndWifiLock() {
+        if (mWifiLock.isHeld()) {
+            mWifiLock.release();
+        }
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.abandonAudioFocus();
+        }
+    }
+
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
 
@@ -63,36 +139,49 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-
+        EventBus.getDefault().post(new AudioCompleteEvent());
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        return false;
+        EventBus.getDefault().post(new AudioErrorEvent());
+        return true;
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-
+        start();
     }
 
     @Override
     public void audioFocusGrant() {
-
+        setVolume(1.0f, 1.0f);
+        if (mIsPauseByFocusLossTransient) {
+            resume();
+        }
+        mIsPauseByFocusLossTransient = false;
     }
 
     @Override
     public void audioFocusLoss() {
-
+        pause();
     }
 
     @Override
     public void audioFocusLossTransient() {
-
+        pause();
+        mIsPauseByFocusLossTransient = true;
     }
 
     @Override
     public void audioFocusLossDuck() {
+        // 瞬间失去焦点
+        setVolume(0.5f, 0.5f);
+    }
 
+    private void setVolume(float leftVol, float rightVol) {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setVolume(leftVol, rightVol);
+        }
     }
 }
