@@ -116,7 +116,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener,
         EventBus.getDefault().post(new AudioStartEvent());
     }
 
-    private CustomMediaPlayer.Status getStatus() {
+    CustomMediaPlayer.Status getStatus() {
         if (mMediaPlayer != null) {
             return mMediaPlayer.getStatus();
         }
