@@ -1,10 +1,14 @@
 package us.bojie.lib_audio.mediaplayer.core;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import us.bojie.lib_audio.mediaplayer.events.AudioCompleteEvent;
+import us.bojie.lib_audio.mediaplayer.events.AudioErrorEvent;
 import us.bojie.lib_audio.mediaplayer.exception.AudioQueueEmptyException;
 import us.bojie.lib_audio.mediaplayer.model.AudioBean;
 
@@ -203,5 +207,17 @@ public class AudioController {
 
     private CustomMediaPlayer.Status getStatus() {
         return mAudioPlayer.getStatus();
+    }
+
+    //插放完毕事件处理
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAudioCompleteEvent(AudioCompleteEvent event) {
+        next();
+    }
+
+    //播放出错事件处理
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAudioErrorEvent(AudioErrorEvent event) {
+        next();
     }
 }
